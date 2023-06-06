@@ -1,7 +1,6 @@
-
-let cantidadAlumnos = 0;
 let alumnos = [];
 
+// Definición de la función constructora Alumno
 function Alumno(nombre) {
   this.nombre = nombre;
   this.notas = [];
@@ -14,11 +13,22 @@ Alumno.prototype.calcularNotaFinal = function() {
   this.notaFinal = notaFinal;
 };
 
-cantidadAlumnos = prompt("Ingrese la cantidad de alumnos:");
-cantidadAlumnos = parseInt(cantidadAlumnos);
+// Función para guardar los alumnos en el almacenamiento local
+function guardarAlumnosEnStorage() {
+  localStorage.setItem('alumnos', JSON.stringify(alumnos));
+}
 
-for (let i = 0; i < cantidadAlumnos; i++) {
-  let nombre = prompt("Ingrese el nombre del alumno " + (i + 1) + ":");
+// Función para cargar los alumnos desde el almacenamiento local
+function cargarAlumnosDesdeStorage() {
+  const almacenamiento = localStorage.getItem('alumnos');
+  if (almacenamiento) {
+    alumnos = JSON.parse(almacenamiento);
+  }
+}
+
+// Función para agregar un nuevo alumno
+function agregarAlumno() {
+  let nombre = prompt("Ingrese el nombre del alumno:");
   let alumno = new Alumno(nombre);
 
   for (let j = 1; j <= 4; j++) {
@@ -35,17 +45,42 @@ for (let i = 0; i < cantidadAlumnos; i++) {
 
   alumno.calcularNotaFinal();
   alumnos.push(alumno);
+  guardarAlumnosEnStorage();
+  mostrarAlumnos();
 }
 
-// Búsqueda de un alumno por nombre
-let nombreBuscado = prompt("Ingrese el nombre del alumno que desea buscar:");
-let alumnoEncontrado = alumnos.find(alumno => alumno.nombre === nombreBuscado);
-if (alumnoEncontrado) {
-  console.log("Alumno encontrado:", alumnoEncontrado);
-} else {
-  console.log("Alumno no encontrado.");
+// Función para buscar un alumno por nombre
+function buscarAlumno() {
+  let nombreBuscado = prompt("Ingrese el nombre del alumno que desea buscar:");
+  let alumnoEncontrado = alumnos.find(alumno => alumno.nombre === nombreBuscado);
+  if (alumnoEncontrado) {
+    console.log("Alumno encontrado:", alumnoEncontrado);
+  } else {
+    console.log("Alumno no encontrado.");
+  }
 }
 
-// Filtrado de alumnos con nota final mayor o igual a 7
-let alumnosAprobados = alumnos.filter(alumno => alumno.notaFinal >= 7);
-console.log("Alumnos aprobados:", alumnosAprobados);
+// Función para filtrar los alumnos aprobados
+function filtrarAlumnosAprobados() {
+  let alumnosAprobados = alumnos.filter(alumno => alumno.notaFinal >= 7);
+  console.log("Alumnos aprobados:", alumnosAprobados);
+}
+
+// Función para mostrar los alumnos en el DOM
+function mostrarAlumnos() {
+  const alumnosContainer = document.getElementById('alumnos-container');
+  alumnosContainer.innerHTML = '';
+
+  alumnos.forEach(alumno => {
+    const alumnoElement = document.createElement('div');
+    alumnoElement.innerHTML = `
+      <h3>${alumno.nombre}</h3>
+      <p>Nota Final: ${alumno.notaFinal}</p>
+    `;
+    alumnosContainer.appendChild(alumnoElement);
+  });
+}
+
+// Carga de los alumnos desde el almacenamiento local y muestra inicial
+cargarAlumnosDesdeStorage();
+mostrarAlumnos();

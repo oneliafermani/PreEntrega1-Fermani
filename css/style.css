@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Gudea&family=Quicksand:wght@300;400;700&family=Raleway:ital,wght@0,300;0,400;0,600;1,600&display=swap');
+
+
+*{
+margin:0;
+padding: 0;
+box-sizing: border-box;
+font-family: "Raleway", sans-serif;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start ;
+    margin: 0px;
+    padding: 10px;
+    background-color: #3E4957;
+}
+
+.headerLogo{
+    margin: 10px;
+    display: flex;
+       
+}
+.headerNav{
+    margin: 15px;
+    list-style: none;
+    text-decoration: none;
+    color: white;
+    
+}
+.headerNavBar{
+    text-align: center;
+    list-style: none;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+.headerNavBar:hover{
+    color: #a3c6f0;
+    text-decoration: underline;
+}
+
+.headerTitulo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align:center ;
+    margin: 10px;
+    width: 100%;
+    color:white;
+    font-family: "Raleway";
+    font-style: italic;
+    font-weight: 600;
+    font-size: 25px; 
+}
+
+.main{
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    background-color: #c5cdd8;
+}
+
+.mainSecUno{
+    margin: 10px;
+    margin-left: 15px;
+   
+}
+
+.mainSecUnoTitulo{
+    width: 100%;
+    margin: 10px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #353d47;
+
+}
+.mainSecUnoText{
+    margin: 5px;
+    font-size: 18px;
+    text-align: justify;
+}
+
+.mainSecDos{
+    margin: 10px;
+    padding: 0px;
+}
+
+.mainSecDosTitulo{
+    width: 100%;
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: underline;
+    color: #353d47;
+}
+
+.mainSecDosForm{
+    width: 80%;
+    margin-left: 20px;
+}
+
+.mainSecTres{
+    margin: 15px;
+    padding: 5px;
+}
+
+.mainSecTresTitulo{
+    width: 100%;
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: underline;
+    color: #353d47;
+}
+
