@@ -106,16 +106,21 @@ font-family: "Raleway", sans-serif;
 }
 
 .mainSecTres{
+    
     margin: 15px;
     padding: 5px;
 }
 
 .mainSecTresTitulo{
     width: 100%;
+    margin: 15px;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
     text-decoration: underline;
     color: #353d47;
 }
 
+.btnEliminar{
+    margin: 10px;
+}
