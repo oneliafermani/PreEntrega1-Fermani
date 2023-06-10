@@ -6,6 +6,8 @@ const usuariosValidos = [
   { email: "docentecoder@gmail.com", contraseña: "contraseña2" },
 ];
 
+let emailActual = ""; // Variable para almacenar el email actualmente ingresado
+
 function submitForm(event) {
   event.preventDefault(); // Para que el formulario no se envíe automáticamente
 
@@ -24,9 +26,12 @@ function submitForm(event) {
     (usuario) => usuario.email === email && usuario.contraseña === password
   );
   if (usuarioValido) {
+    emailActual = email; // Almacenar el email actualmente ingresado
     // Ocultar sección de ingreso y mostrar registro de alumnos
     document.getElementById("seccion-ingreso").style.display = "none";
     document.getElementById("registro-alumnos").style.display = "block";
+    cargarAlumnosDesdeStorage(); // Cargar los alumnos del almacenamiento local
+    mostrarAlumnos(); // Mostrar los alumnos en la página principal
   } else {
     alert("Email o contraseña incorrectos");
     return;
@@ -62,12 +67,12 @@ Alumno.prototype.calcularNotaFinal = function () {
 
 // Función para guardar los alumnos en el almacenamiento local
 function guardarAlumnosEnStorage() {
-  localStorage.setItem("alumnos", JSON.stringify(alumnos));
+  localStorage.setItem("alumnos-" + emailActual, JSON.stringify(alumnos));
 }
 
 // Función para cargar los alumnos desde el almacenamiento local
 function cargarAlumnosDesdeStorage() {
-  const almacenamiento = localStorage.getItem("alumnos");
+  const almacenamiento = localStorage.getItem("alumnos-" + emailActual);
   if (almacenamiento) {
     alumnos = JSON.parse(almacenamiento);
   }
@@ -76,11 +81,13 @@ function cargarAlumnosDesdeStorage() {
 // Función para agregar un alumno nuevo
 function agregarAlumno() {
   let nombre = prompt("Ingrese el nombre del alumno:");
+  if (!nombre) return; // Si se presiona cancelar en el cuadro de diálogo, no se agrega el alumno
+
   let alumno = new Alumno(nombre);
 
   for (let j = 1; j <= 4; j++) {
     let nota = 0;
-    while (nota < 1 || nota > 10) {
+    while (nota < 1 || nota > 10 || isNaN(nota)) {
       nota = prompt(
         "Ingrese la nota de la evaluación " +
           j +
@@ -89,9 +96,9 @@ function agregarAlumno() {
           ":"
       );
       nota = parseFloat(nota);
-      if (nota < 1 || nota > 10) {
+      if (nota < 1 || nota > 10 || isNaN(nota)) {
         alert(
-          "La nota ingresada es inválida. Ingrese una nota entre 1 y 10."
+          "La nota ingresada es inválida. Ingrese una nota numérica entre 1 y 10."
         );
       }
     }
@@ -160,6 +167,11 @@ function mostrarAlumnos() {
   });
 }
 
-// Carga de los alumnos desde el almacenamiento local y muestra inicial
-cargarAlumnosDesdeStorage();
-mostrarAlumnos();
+// Función para cerrar sesión
+function cerrarSesion() {
+  // Restablecer variables y ocultar sección de registro de alumnos
+  emailActual = "";
+  alumnos = [];
+  document.getElementById("registro-alumnos").style.display = "none";
+  document.getElementById("seccion-ingreso").style.display = "block";
+}

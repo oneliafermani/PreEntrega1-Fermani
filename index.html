@@ -7,15 +7,16 @@
   <title>Calcula tu Promedio</title>
   <!-- Estilos css-->
   <link rel="stylesheet" href="./css/style.css">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!--iconos fontawasome-->
+  <script src="https://kit.fontawesome.com/4dfd6fc3c3.js" crossorigin="anonymous"></script>          
 </head>
 
 <body>
   <header class="header">
     <div class="headerLogo">
-      <img src="./asset/LOGO ESCUELA-PhotoRoom.png-PhotoRoom.png" width="100px" alt="logo" > <a href="./index.html"></a>
+      <img src="./asset/LOGO ESCUELA-PhotoRoom.png-PhotoRoom.png" width="100px" alt="logo">
     </div>
     <div class="headerNav">
       <nav>
@@ -29,40 +30,55 @@
     </div>
   </header>
   <main class="main">
-    <div class="mainSecUno">
-      <h2 class="mainSecUnoTitulo">SITIO EXCLUSIVO PARA NUESTROS DOCENTES</h2>
-      <p class="mainSecUnoText">Desde la institución brindamos a nuestros docentes un sitio web para facilitarles el
-        registro de sus alumnos y de sus evaluaciones.</p>
-    </div>
+    <div id="seccion-ingreso">
+      <div class="mainSecUno">
+        <h2 class="mainSecUnoTitulo">SITIO EXCLUSIVO PARA NUESTROS DOCENTES</h2>
+        <p class="mainSecUnoText">Desde la institución brindamos a nuestros docentes un sitio web para facilitarles el
+          registro de sus alumnos y de sus evaluaciones.</p>
+      </div>
 
-    <div class="mainSecDos" id="seccion-ingreso">
-      <h3 class="mainSecDosTitulo">REGISTRO DOCENTE:</h3>
-      <form class="mainSecDosForm" id="login-form">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-          <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" required>
-        </div>
-        <button type="submit" class="btn btn-primary" id="boton-ingresar">Ingresar</button>
-      </form>
-    </div>
-
+      <div class="mainSecDos" id="seccion-ingreso">
+        <h3 class="mainSecDosTitulo">REGISTRO DOCENTE:</h3>
+        <form class="mainSecDosForm" id="login-form">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+            <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="boton-ingresar">Ingresar</button>
+        </form>
+      </div>
+  </div>
     <div class="mainSecTres" id="registro-alumnos" style="display: none;">
-        <h3 class="mainSecTresTitulo">REGISTRO DE ALUMNOS</h3>
-        <div id="alumnos-container"></div>
-        <button class="btn btn-primary" onclick="agregarAlumno()">Agregar Alumno</button>
-        <button class="btn btn-primary" onclick="buscarAlumno()">Buscar Alumno</button>
-        <button class="btn btn-primary" onclick="filtrarAlumnosAprobados()">Filtrar Alumnos Aprobados</button>
-        <button class="btn btn-primary" onclick="mostrarNotasYPromedio()">Mostrar Notas y Promedio</button>  
+      <p> Bienvenido/a al sistema de alumnos</p>
+      <h3 class="mainSecTresTitulo">REGISTRO DE ALUMNOS</h3>
+      <div id="alumnos-container"></div>
+      <button class="btn btn-primary" onclick="agregarAlumno()">Agregar Alumno</button>
+      <button class="btn btn-primary" onclick="buscarAlumno()">Buscar Alumno</button>
+      <button class="btn btn-primary" onclick="filtrarAlumnosAprobados()">Filtrar Alumnos Aprobados</button>
+      <button class="btn btn-primary" onclick="mostrarNotasYPromedio()">Mostrar Notas y Promedio</button>
+      <div class="btnCerrarSesion">
+        <button class="btn btn-primary" onclick="cerrarSesion()">Cerrar Sesión</button>
+      </div>
     </div>
+   
 
-    
   </main>
-  <footer></footer>
+  <footer class="footer">
+    <div>
+      <p class="footerText">  Escuela Normar Superior "Maestros Argentinos" </p>
+      <p class="footerText"> Corral de Bustos - Córdoba </p>
+    </div>
+    <div class="footerIco">
+      <a href="www.instagram.com" target="_blank"></a> <i class="fa-brands fa-square-instagram Ico"></i>
+      <a href="www.facebook.com" target="_blank"></a> <i class="fa-brands fa-facebook Ico"></i>
+      <a href="https://web.whatsapp.com/" target="_blank"></a> <i class="fa-brands fa-square-whatsapp Ico"></i>
+  </div>
+  </footer>
 
   <script src="./main.js/main.js"></script>
   <script
