@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Juan Perez",
+    "notas": [7, 8, 9, 6],
+    "promedio": 7.5
+  },
+  {
+    "nombre": "María González",
+    "notas": [6, 7, 8, 9],
+    "promedio": 7.5
+  },
+  {
+    "nombre": "Carlos Ramirez",
+    "notas": [8, 9, 7, 8],
+    "promedio": 8
+  }
+]

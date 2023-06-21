@@ -67,7 +67,8 @@ Alumno.prototype.calcularNotaFinal = function () {
 
 // Función para guardar los alumnos en el almacenamiento local
 function guardarAlumnosEnStorage() {
-  localStorage.setItem("alumnos-" + emailActual, JSON.stringify(alumnos));
+  const alumnosJSON = JSON.stringify(alumnos);
+  localStorage.setItem("alumnos-" + emailActual, alumnosJSON);
 }
 
 // Función para cargar los alumnos desde el almacenamiento local
@@ -112,43 +113,78 @@ function agregarAlumno() {
 }
 
 // Función para eliminar un alumno
+// Función para eliminar un alumno
 function eliminarAlumno(nombre) {
-  alumnos = alumnos.filter((alumno) => alumno.nombre !== nombre);
-  guardarAlumnosEnStorage();
-  mostrarAlumnos();
-}
-
-// Función para mostrar las notas de los alumnos una a una y luego el promedio
-function mostrarNotasYPromedio() {
-  alumnos.forEach((alumno) => {
-    for (let i = 0; i < alumno.notas.length; i++) {
-      alert(
-        `El alumno ${alumno.nombre} tiene la nota ${alumno.notas[i]} en la evaluación ${i + 1}`
-      );
-    }
-    alert(
-      `El alumno ${alumno.nombre} tiene un promedio de ${alumno.notaFinal}`
-    );
-  });
+  swal({
+    title: "¿Estás seguro?",
+    text: `¿Deseas eliminar al alumno ${nombre}?`,
+    icon: "warning",
+    buttons: ["Cancelar", "Eliminar"],
+    dangerMode: true,
+  })
+    .then((confirmar) => {
+      if (confirmar) {
+        alumnos = alumnos.filter((alumno) => alumno.nombre !== nombre);
+        guardarAlumnosEnStorage();
+        mostrarAlumnos();
+        swal("¡Alumno eliminado!", `El alumno ${nombre} ha sido eliminado.`, "success");
+      } else {
+        swal("Cancelado", `El alumno ${nombre} no ha sido eliminado.`, "info");
+      }
+    })
+    .catch((err) => {
+      swal("¡Oh, no!", "¡Hubo un error al eliminar el alumno!", "error");
+    });
 }
 
 // Función para buscar un alumno por nombre
 function buscarAlumno() {
-  let nombreBuscado = prompt("Ingrese el nombre del alumno que desea buscar:");
-  let alumnoEncontrado = alumnos.find(
-    (alumno) => alumno.nombre === nombreBuscado
-  );
-  if (alumnoEncontrado) {
-    console.log("Alumno encontrado:", alumnoEncontrado);
-  } else {
-    console.log("Alumno no encontrado.");
-  }
+  swal({
+    text: 'Buscar un alumno. Por ejemplo, "Juan Pérez".',
+    content: "input",
+    button: {
+      text: "Buscar",
+      closeModal: false,
+    },
+  })
+    .then((nombre) => {
+      if (!nombre) throw null;
+
+      const alumnoEncontrado = alumnos.find(
+        (alumno) => alumno.nombre.toLowerCase() === nombre.toLowerCase()
+      );
+
+      if (alumnoEncontrado) {
+        swal({
+          title: "Resultado de búsqueda",
+          text: `El alumno ${alumnoEncontrado.nombre} fue encontrado.`,
+          icon: "success",
+        });
+      } else {
+        swal("¡No se encontró ningún alumno!", "", "error");
+      }
+    })
+    .catch((err) => {
+      if (err) {
+        swal("¡Oh, no!", "¡Hubo un error al buscar el alumno!", "error");
+      } else {
+        swal.stopLoading();
+        swal.close();
+      }
+    });
 }
+
 
 // Función para filtrar los alumnos aprobados
 function filtrarAlumnosAprobados() {
   let alumnosAprobados = alumnos.filter((alumno) => alumno.notaFinal >= 7);
-  console.log("Alumnos aprobados:", alumnosAprobados);
+  swal({
+    title: "Alumnos aprobados",
+    text: `Los alumnos aprobados son: ${alumnosAprobados
+      .map((alumno) => alumno.nombre)
+      .join(", ")}`,
+    icon: "success",
+  });
 }
 
 // Función para mostrar los alumnos en el DOM
@@ -159,7 +195,7 @@ function mostrarAlumnos() {
   alumnos.forEach((alumno) => {
     const alumnoElement = document.createElement("div");
     alumnoElement.innerHTML = `
-      <h3>${alumno.nombre}</h3>
+      <h3>${alumno.nombre}</h3>  
       <p>Nota Final: ${alumno.notaFinal}</p>
       <button class="btn btn-primary btnEliminar" onclick="eliminarAlumno('${alumno.nombre}')">Eliminar</button>
     `;
