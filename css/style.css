@@ -132,8 +132,8 @@ font-family: "Raleway", sans-serif;
 }
 
 .footer{
-    margin: 0;
-    padding: 5px;
+    margin-top: 10px;
+    padding: 10px;
     background-color: #3E4957;
     display: flex;
     flex-direction: column;
@@ -162,3 +162,22 @@ font-family: "Raleway", sans-serif;
 .ico{
     margin: 5px;
 }
+
+/* Agregar estilo al botón "Agregar Alumnos" */
+.btn-success {
+    
+    color: white;
+  }
+  
+  /* Agregar estilo al botón "Buscar Alumnos" */
+  .btn-primary:nth-child(1) {
+    
+    color: white;
+  }
+  
+  /* Agregar estilo al botón "Filtrar Alumnos" */
+  .btn-primary:nth-child(2) {
+    
+    color: white;
+  }
+  

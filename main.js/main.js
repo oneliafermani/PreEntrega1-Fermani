@@ -36,11 +36,11 @@ function submitForm(event) {
     alert("Email o contraseña incorrectos");
     return;
   }
-}
 
-// Restablecer los campos del formulario
-document.getElementById("exampleInputEmail1").value = "";
-document.getElementById("exampleInputPassword1").value = "";
+  // Restablecer los campos del formulario
+  document.getElementById("exampleInputEmail1").value = "";
+  document.getElementById("exampleInputPassword1").value = "";
+}
 
 // Constante para obtener el ID del botón de ingreso
 const botonIngresar = document.getElementById("boton-ingresar");
@@ -66,7 +66,7 @@ Alumno.prototype.calcularNotaFinal = function () {
 };
 
 // Función para guardar los alumnos en el almacenamiento local
-function guardarAlumnosEnStorage() {
+function guardarAlumnosEnLocalStorage() {
   const alumnosJSON = JSON.stringify(alumnos);
   localStorage.setItem("alumnos-" + emailActual, alumnosJSON);
 }
@@ -90,124 +90,150 @@ function agregarAlumno() {
     let nota = 0;
     while (nota < 1 || nota > 10 || isNaN(nota)) {
       nota = prompt(
-        "Ingrese la nota de la evaluación " +
-          j +
-          " del alumno " +
-          alumno.nombre +
-          ":"
+        "Ingrese la nota " + j + " del alumno " + nombre + " (1 a 10):"
       );
-      nota = parseFloat(nota);
-      if (nota < 1 || nota > 10 || isNaN(nota)) {
-        alert(
-          "La nota ingresada es inválida. Ingrese una nota numérica entre 1 y 10."
-        );
-      }
+      nota = parseInt(nota);
     }
     alumno.notas.push(nota);
   }
 
   alumno.calcularNotaFinal();
   alumnos.push(alumno);
-  guardarAlumnosEnStorage();
+  guardarAlumnosEnLocalStorage();
   mostrarAlumnos();
 }
 
-// Función para eliminar un alumno
-// Función para eliminar un alumno
-function eliminarAlumno(nombre) {
-  swal({
-    title: "¿Estás seguro?",
-    text: `¿Deseas eliminar al alumno ${nombre}?`,
-    icon: "warning",
-    buttons: ["Cancelar", "Eliminar"],
-    dangerMode: true,
-  })
-    .then((confirmar) => {
-      if (confirmar) {
-        alumnos = alumnos.filter((alumno) => alumno.nombre !== nombre);
-        guardarAlumnosEnStorage();
-        mostrarAlumnos();
-        swal("¡Alumno eliminado!", `El alumno ${nombre} ha sido eliminado.`, "success");
-      } else {
-        swal("Cancelado", `El alumno ${nombre} no ha sido eliminado.`, "info");
-      }
-    })
-    .catch((err) => {
-      swal("¡Oh, no!", "¡Hubo un error al eliminar el alumno!", "error");
+// Función para mostrar los alumnos en la página principal
+function mostrarAlumnos() {
+  let listaAlumnos = document.getElementById("lista-alumnos");
+  listaAlumnos.innerHTML = "";
+
+  if (alumnos.length === 0) {
+    listaAlumnos.innerHTML = "<p>No hay alumnos registrados.</p>";
+    return;
+  }
+
+  let tabla = document.createElement("table");
+  tabla.classList.add("table", "table-striped");
+
+  let encabezado = document.createElement("thead");
+  let encabezadoFila = document.createElement("tr");
+  let encabezadoNombre = document.createElement("th");
+  encabezadoNombre.textContent = "Nombre";
+  encabezadoFila.appendChild(encabezadoNombre);
+
+  for (let i = 1; i <= 4; i++) {
+    let encabezadoNota = document.createElement("th");
+    encabezadoNota.textContent = "Nota " + i;
+    encabezadoFila.appendChild(encabezadoNota);
+  }
+
+  let encabezadoNotaFinal = document.createElement("th");
+  encabezadoNotaFinal.textContent = "Nota Final";
+  encabezadoFila.appendChild(encabezadoNotaFinal);
+
+  encabezado.appendChild(encabezadoFila);
+  tabla.appendChild(encabezado);
+
+  let cuerpoTabla = document.createElement("tbody");
+
+  alumnos.forEach((alumno) => {
+    let fila = document.createElement("tr");
+
+    let celdaNombre = document.createElement("td");
+    celdaNombre.textContent = alumno.nombre;
+    fila.appendChild(celdaNombre);
+
+    alumno.notas.forEach((nota) => {
+      let celdaNota = document.createElement("td");
+      celdaNota.textContent = nota;
+      fila.appendChild(celdaNota);
     });
+
+    let celdaNotaFinal = document.createElement("td");
+    celdaNotaFinal.textContent = alumno.notaFinal.toFixed(2);
+    fila.appendChild(celdaNotaFinal);
+
+    cuerpoTabla.appendChild(fila);
+  });
+
+  tabla.appendChild(cuerpoTabla);
+  listaAlumnos.appendChild(tabla);
+}
+
+// Función para cerrar la sesión
+function cerrarSesion() {
+  emailActual = "";
+  alumnos = [];
+  document.getElementById("seccion-ingreso").style.display = "block";
+  document.getElementById("registro-alumnos").style.display = "none";
+  document.getElementById("lista-alumnos").innerHTML = "";
 }
 
 // Función para buscar un alumno por nombre
 function buscarAlumno() {
-  swal({
-    text: 'Buscar un alumno. Por ejemplo, "Juan Pérez".',
-    content: "input",
-    button: {
-      text: "Buscar",
-      closeModal: false,
-    },
-  })
-    .then((nombre) => {
-      if (!nombre) throw null;
+  let nombreBusqueda = prompt("Ingrese el nombre del alumno a buscar:");
+  if (!nombreBusqueda) return; // Si se presiona cancelar en el cuadro de diálogo, no se realiza la búsqueda
 
-      const alumnoEncontrado = alumnos.find(
-        (alumno) => alumno.nombre.toLowerCase() === nombre.toLowerCase()
-      );
+  let resultados = alumnos.filter((alumno) =>
+    alumno.nombre.toLowerCase().includes(nombreBusqueda.toLowerCase())
+  );
 
-      if (alumnoEncontrado) {
-        swal({
-          title: "Resultado de búsqueda",
-          text: `El alumno ${alumnoEncontrado.nombre} fue encontrado.`,
-          icon: "success",
-        });
-      } else {
-        swal("¡No se encontró ningún alumno!", "", "error");
-      }
-    })
-    .catch((err) => {
-      if (err) {
-        swal("¡Oh, no!", "¡Hubo un error al buscar el alumno!", "error");
-      } else {
-        swal.stopLoading();
-        swal.close();
-      }
+  if (resultados.length === 0) {
+    alert("No se encontraron resultados.");
+  } else {
+    let mensaje = "Alumnos encontrados:\n\n";
+    resultados.forEach((alumno) => {
+      mensaje += "Nombre: " + alumno.nombre + "\n";
+      mensaje += "Notas: " + alumno.notas.join(", ") + "\n";
+      mensaje += "Nota Final: " + alumno.notaFinal.toFixed(2) + "\n\n";
     });
+    alert(mensaje);
+  }
 }
-
 
 // Función para filtrar los alumnos aprobados
 function filtrarAlumnosAprobados() {
   let alumnosAprobados = alumnos.filter((alumno) => alumno.notaFinal >= 7);
-  swal({
-    title: "Alumnos aprobados",
-    text: `Los alumnos aprobados son: ${alumnosAprobados
-      .map((alumno) => alumno.nombre)
-      .join(", ")}`,
-    icon: "success",
-  });
+
+  if (alumnosAprobados.length === 0) {
+    alert("No hay alumnos aprobados.");
+  } else {
+    let mensaje = "Alumnos aprobados:\n\n";
+    alumnosAprobados.forEach((alumno) => {
+      mensaje += "Nombre: " + alumno.nombre + "\n";
+      mensaje += "Notas: " + alumno.notas.join(", ") + "\n";
+      mensaje += "Nota Final: " + alumno.notaFinal.toFixed(2) + "\n\n";
+    });
+    alert(mensaje);
+  }
 }
 
-// Función para mostrar los alumnos en el DOM
-function mostrarAlumnos() {
-  const alumnosContainer = document.getElementById("alumnos-container");
-  alumnosContainer.innerHTML = "";
+// Función para eliminar un alumno por nombre
+function eliminarAlumno() {
+  let nombreEliminar = prompt("Ingrese el nombre del alumno a eliminar:");
+  if (!nombreEliminar) return; // Si se presiona cancelar en el cuadro de diálogo, no se realiza la eliminación
 
-  alumnos.forEach((alumno) => {
-    const alumnoElement = document.createElement("div");
-    alumnoElement.innerHTML = `
-      <h3>${alumno.nombre}</h3>  
-      <p>Nota Final: ${alumno.notaFinal}</p>
-      <button class="btn btn-primary btnEliminar" onclick="eliminarAlumno('${alumno.nombre}')">Eliminar</button>
-    `;
-    alumnosContainer.appendChild(alumnoElement);
-  });
+  const indiceAlumno = alumnos.findIndex(
+    (alumno) => alumno.nombre.toLowerCase() === nombreEliminar.toLowerCase()
+  );
+
+  if (indiceAlumno === -1) {
+    alert("No se encontró el alumno.");
+  } else {
+    alumnos.splice(indiceAlumno, 1); // Eliminar el alumno del arreglo
+    guardarAlumnosEnLocalStorage(); // Guardar los cambios en el almacenamiento local
+    mostrarAlumnos(); // Actualizar la lista de alumnos mostrada en la página
+    alert("Alumno eliminado correctamente.");
+  }
 }
+// Función para calcular el promedio de las notas finales de todos los alumnos
+function calcularPromedio() {
+  if (alumnos.length === 0) {
+    return 0;
+  }
 
-// Función para cerrar sesión
-function cerrarSesion() {
-  // Restablecer variables y ocultar sección de registro de alumnos
-  emailActual = "";
-  alumnos = [];
-  document.getElementById("registro-alumnos").style.display = "none";
-  document.getElementById("seccion-ingreso").style.display = "block";
+  let sumaNotas = alumnos.reduce((total, alumno) => total + alumno.notaFinal, 0);
+  let promedio = sumaNotas / alumnos.length;
+  return promedio;
 }
